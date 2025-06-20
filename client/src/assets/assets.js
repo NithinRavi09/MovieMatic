@@ -5,6 +5,7 @@ import appStore from './appStore.svg'
 import screenImage from './screenImage.svg'
 import profile from './profile.png'
 import logoMovieMatic from './logo_MovieMatic.png'
+import thudarumLogo from './thudarumLogo.png'
 
 export const assets = {
     logo,
@@ -13,7 +14,8 @@ export const assets = {
     appStore,
     screenImage,
     profile,
-    logoMovieMatic
+    logoMovieMatic,
+    thudarumLogo
 }
 
 export const dummyTrailers = [
