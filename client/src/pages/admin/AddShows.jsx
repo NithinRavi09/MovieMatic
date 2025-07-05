@@ -95,7 +95,9 @@ const AddShows = () => {
 
   useEffect(() => {
     if(user){
-      fetchNowPlayingMovies();
+      setTimeout(() => {
+        fetchNowPlayingMovies();
+      }, 2000);
     }
   }, [user]);
 

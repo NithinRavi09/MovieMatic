@@ -3,14 +3,36 @@ import Movie from "../models/Movie.js";
 import Show from "../models/Show.js";
 import { inngest } from "../inngest/index.js";
 
-// API TO GET NOW PLAYING MOVIES FROM TMDB API
+
+// API TO GET MALAYALAM AND ENGLISH MOVIES
+const fetchMovies = async (language, date) => {
+  const { data } = await axios.get(
+    `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&release_date.gte=2025-01-01&release_date.lte=${date}&page=1&sort_by=popularity.desc&with_original_language=${language}&with_release_type=3|2&region=IN`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
+      },
+    }
+  );
+
+  return data.results;
+};
+
+
+// FUNCTION TO GET NOW PLAYING MOVIES FROM TMDB API
 export const getNowPlayingMovies = async (req, res) => {
     try {
-        const { data } = await axios.get('https://api.themoviedb.org/3/movie/now_playing', {
-            headers: {Authorization: `Bearer ${process.env.TMDB_API_KEY}`}
-        })
 
-        const movies = data.results;
+        const date = new Date()
+        const onlyDate = date.toISOString().split('T')[0]
+
+        const [malayalamMovies, englishMovies] = await Promise.all([
+            fetchMovies('ml', onlyDate),
+            fetchMovies('en', onlyDate),
+        ])
+
+
+        const movies = [...malayalamMovies, ...englishMovies]
 
         res.json({success: true, movies: movies})
     } catch (error) {
